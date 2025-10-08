@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 #include "../lib_easy_example/easy_example.h"
+#include "stack.h"
 
 #define EPSILON 0.000001
 
@@ -47,4 +48,9 @@ TEST(TestEasyExampleLib, throw_when_try_div_by_zero) {
 
   // Act & Assert
   ASSERT_ANY_THROW(division(x, y));
+}
+
+TEST(testEasyStack, stackCheck) {
+	Stack s1;
+	EXPECT_NO_THROW(s1.stack());
 }
