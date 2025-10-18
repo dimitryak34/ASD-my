@@ -41,3 +41,21 @@ TQueue<T>::TQueue(size_t size) {
 
 template <class T>
 T TQueue<T>::head() const { return _data[_head]; }
+
+template <class T>
+void TQueue<T>::push(const T& val) {
+	if (isFull()) {
+		throw std::length_error("queue massive is full");
+	}
+	_count++;
+	_data[(_head + (_size - _count)) % _size] = val;
+}
+
+template <class T>
+void TQueue<T>::pop() {
+	if (isEmpty()) {
+		throw std::length_error("queue massive is empty");
+	}
+	_count--;
+	_head = (++_head) % _size;
+}
