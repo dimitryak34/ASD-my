@@ -13,6 +13,7 @@ public:
 
 
 	T head() const;
+	T elem(int i) const;
 
 	void push(const T& val);
 	void pop();
@@ -21,7 +22,9 @@ public:
 
 	size_t size() { return _size; }
 	size_t count() { return _count; }
-	int head() { return _head; }
+	int indHead() { return _head; }
+	void setIndHead(int i) { _head = i; }
+	void setCount(size_t c) { _count = c; }
 
 };
 
@@ -39,24 +42,25 @@ template <class T>
 TQueue<T>::TQueue(size_t size) {
 	_data = new T[size];
 	_size = size;
-	for (int i = 0; i < _size; i++) {
-		_data[i] = 0;
-	}
 	_head = _size - 1;
-	_count = _size;
+	_count = 0;
 }
 
 
 template <class T>
 T TQueue<T>::head() const { return _data[_head]; }
+template <class T>
+T TQueue<T>::elem(int i) const { return _data[i]; }
 
 template <class T>
 void TQueue<T>::push(const T& val) {
 	if (isFull()) {
 		throw std::length_error("queue massive is full");
 	}
-	_count++;
 	_data[(_head + (_size - _count)) % _size] = val;
+	_count++;
+
+	//_data[(_head + (_count - 1)) % _size] = val;
 }
 
 template <class T>
