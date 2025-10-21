@@ -13,7 +13,7 @@ public:
 
 
 	T head() const;
-	T elem(int i) const;
+	T elem(int i) const noexcept;
 
 	void push(const T& val);
 	void pop();
@@ -50,7 +50,7 @@ TQueue<T>::TQueue(size_t size) {
 template <class T>
 T TQueue<T>::head() const { return _data[_head]; }
 template <class T>
-T TQueue<T>::elem(int i) const { return _data[i]; }
+T TQueue<T>::elem(int i) const noexcept { return _data[i]; }
 
 template <class T>
 void TQueue<T>::push(const T& val) {
@@ -69,7 +69,7 @@ void TQueue<T>::pop() {
 		throw std::length_error("queue massive is empty");
 	}
 	_count--;
-	_head = (++_head) % _size;
+	_head = (--_head) % _size;
 }
 
 template <class T>
