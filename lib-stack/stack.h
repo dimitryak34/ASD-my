@@ -8,9 +8,11 @@ class Stack  {
 	int _top;
 	int _size;
 	T* _data;
+	
+public:
 	bool isEmpty();
 	bool isFull();
-public:
+
 	Stack() : _top(-1), _size(0), _data(nullptr){}
 	Stack( T* data, int size);					// INIT 1
 	Stack(std::initializer_list<T> data);			// INIT 2
