@@ -3,7 +3,14 @@
 #define TRASH -2453563568
 
 TEST(testQueue, can_init_queue) {
+	TQueue q1({ 1, 2, 3, 4 });
+
 	ASSERT_NO_THROW(TQueue({1, 2, 3, 4}));
+	EXPECT_EQ(q1.elem(0), 1);
+	EXPECT_EQ(q1.elem(1), 2);
+	EXPECT_EQ(q1.elem(2), 3);
+	EXPECT_EQ(q1.elem(3), 4);
+
 }
 
 TEST(testQueue, test_default_constr) {
