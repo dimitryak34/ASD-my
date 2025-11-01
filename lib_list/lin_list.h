@@ -1,15 +1,23 @@
 #include <list>
 
 template <typename T>
-class Node {
+struct Node {
 	T obj;
-	T* next;
+	Node<T>* _next;
 
 public:
 	Node() {
 		obj = 0;
 		next = nullptr;
 	}
+
+	Node(T val, Node<T>* next = nullptr) {
+		obj = val;
+		if (next != nullptr) {
+			_next = next;
+		}
+	}
+
 	Node(std::list& list, size_t pos) {
 		obj = list[pos];
 		next = &list[pos + 1];
@@ -19,14 +27,23 @@ public:
 template <typename T>
 class List {
 	// ...........
-	Node<T> _head;
-	Node<T>* tail;
-	int count;
+	Node<T>* _head;
+	Node<T>* _tail;
+	int _count;
 
 public:
-	void pushBack(const T& obj);
+	List(): _head(nullptr), _tail(nullptr), _count(0){}
+	List(const List& oth);
 
-	// .............................
+	void pushBack(const T& obj) noexcept;
+	void pushFront(const T& obj) noexcept;
+	void insert(const T& obj, int pos);
+	T popBack();
+	T popFront();
+	bool isEmpty();
+	Node<T>* find(const T& val) const;
+
+
 
 
 	class Iterator;
@@ -48,3 +65,17 @@ public:
 	};
 
 };
+
+
+template <typename T>
+void List<T>::pushBack(const T& obj) noexcept {
+	Node<T>* node = new Node<T>(obj);
+	if (isEmpty()) {
+		_head = _tail = node;
+		_count++; 
+		return;
+	}
+	_tail->_next = node;
+	_tail = node;
+	++_count;
+}
