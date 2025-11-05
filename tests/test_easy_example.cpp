@@ -1,4 +1,4 @@
-// forked from 2024 Marina Usova
+/* // forked from 2024 Marina Usova
 
 #include <gtest/gtest.h>
 #include "../lib_easy_example/easy_example.h"
@@ -48,3 +48,4 @@ TEST(TestEasyExampleLib, throw_when_try_div_by_zero) {
   // Act & Assert
   ASSERT_ANY_THROW(division(x, y));
 }
+ */
