@@ -1,27 +1,29 @@
 #include <list>
 
 template <typename T>
-struct Node {
-	T obj;
+class Node {
+public:
+	T _obj;
 	Node<T>* _next;
 
-public:
+	//friend class List<T>;
 	Node() {
-		obj = 0;
-		next = nullptr;
+		_obj = 0;
+		_next = nullptr;
 	}
 
 	Node(T val, Node<T>* next = nullptr) {
-		obj = val;
-		if (next != nullptr) {
-			_next = next;
-		}
+		_obj = val;
+		_next = next;
+		
 	}
+	//~Node() {
+	//	_next = nullptr;
+	//}
 
-	Node(std::list& list, size_t pos) {
-		obj = list[pos];
-		next = &list[pos + 1];
-	}
+	//Node(std::list& list, size_t pos) {
+	//	obj = list[pos];
+	//	next = &list[pos + 1];
 };
 
 template <typename T>
@@ -29,11 +31,12 @@ class List {
 	// ...........
 	Node<T>* _head;
 	Node<T>* _tail;
-	int _count;
+	int _count;			// number of nodes
 
 public:
 	List(): _head(nullptr), _tail(nullptr), _count(0){}
 	List(const List& oth);
+	~List();
 
 	void pushBack(const T& obj) noexcept;
 	void pushFront(const T& obj) noexcept;
@@ -43,9 +46,13 @@ public:
 	bool isEmpty();
 	Node<T>* find(const T& val) const;
 
+	auto head() const noexcept { return _head; }
+	auto tail()const noexcept { return _tail; }
+	int count() const noexcept { return _count; }
 
 
 
+	// ##############################	SUPPORTING CLASS ITERATOR	##################################
 	class Iterator;
 	Iterator begin() { return Iterator(); }
 	Iterator end() { return Iterator(nullptr); }
@@ -63,15 +70,53 @@ public:
 		Iterator operator++(int);
 		Iterator& operator++();
 	};
-
+	// #################################################################################################
 };
 
+template <typename T>
+List<T>::List(const List& oth) {
+	if (_head != oth._head && _tail != oth._tail) {
+		Node<T>* cur = _head;
+		while (cur != nullptr) {
+			pushBack(cur->_obj);
+			cur = cur->_next;
+		}
+		_count = oth._count;
+	}
+}
+template <typename T>
+List<T>::~List() {
+	Node<T>* temp;
+	while (_head != nullptr) {
+		temp = _head;
+		_head = _head->_next;
+		delete temp;
+	}
+
+	//delete _head;
+	//_count = 0;
+}
+
+
+
+
+
+
+
+template <typename T>
+bool List<T>::isEmpty() {
+	if (_count == 0 && _tail == nullptr && _head == nullptr) {
+		return true;
+	}
+	return false;
+}
 
 template <typename T>
 void List<T>::pushBack(const T& obj) noexcept {
 	Node<T>* node = new Node<T>(obj);
 	if (isEmpty()) {
-		_head = _tail = node;
+		_head = node;
+		_tail = node;
 		_count++; 
 		return;
 	}
@@ -79,3 +124,12 @@ void List<T>::pushBack(const T& obj) noexcept {
 	_tail = node;
 	++_count;
 }
+template <typename T>
+void List<T>::pushFront(const T& obj) noexcept {
+	Node<T>* node = new Node<T>(obj);
+	node->_next = _head;
+	if (isEmpty()) { _tail = node; }
+	_head = node;
+	_count++;
+}
+
