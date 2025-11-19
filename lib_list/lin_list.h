@@ -41,7 +41,7 @@ public:
 	void pushBack(const T& obj) noexcept;
 	void pushFront(const T& obj) noexcept;
 	void insert(const T& obj, int pos);
-	T popBack();
+	T erase(int pos);
 	T popFront();
 	bool isEmpty();
 	Node<T>* find(const T& val) const;
@@ -72,6 +72,10 @@ public:
 	};
 	// #################################################################################################
 };
+
+
+
+
 
 template <typename T>
 List<T>::List(const List& oth) {
@@ -133,3 +137,35 @@ void List<T>::pushFront(const T& obj) noexcept {
 	_count++;
 }
 
+template <typename T>
+T List<T>::popFront() {
+	Node<T>* temp;
+		temp = _head;
+		_head = _head->_next;
+
+		T res = temp->_obj;
+		delete temp;
+		_count--;
+		return res;
+}
+template <typename T>
+T List<T>::erase(int pos) {
+	if (pos == 0) {
+		throw std::logic_error("unvalid position");
+	}
+	int i = 0;
+	Node<T>* cur = _head, *temp;
+	T res;
+	while (i != pos-1) {
+		cur = _head->_next;
+		i++;
+	}
+	res = cur->_next->_obj;
+	temp = cur->_next->_next;
+	delete cur->_next;
+	cur->_next = temp;
+	if (pos == _count - 1) { _tail = cur; }
+	_count--;
+	return res;
+
+}
